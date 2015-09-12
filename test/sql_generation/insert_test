@@ -1,0 +1,25 @@
+import unittest
+from sql_generation.insert_into import insert_into, transform
+
+
+## confirms that we get the correct insert statement
+class TestInsertMethods(unittest.TestCase):
+    def test_insert(self):
+        column_value_pairs = [{"NAME": "Donald", "AGE": 54}]
+        insert_statement = insert_into("USER_TABLE", column_value_pairs)
+
+        # there is no guarantee on the ordering of columns
+        expected_insert_statement1 = "INSERT INTO USER_TABLE (AGE, NAME) VALUES (54, 'Donald')"
+        expected_insert_statement2 = "INSERT INTO USER_TABLE (NAME, AGE) VALUES ('Donald', 54)"
+
+        test_result = (insert_statement == expected_insert_statement1) or (
+            insert_statement == expected_insert_statement2)
+
+        self.assertTrue(test_result)
+
+    ## confirm that strings and integers get handled correctly
+    def test_transform_with_string(self):
+        str_input = "hello"
+        result = transform(str_input)
+        expected = "'hello'"
+        self.assertEqual(expected, result)
