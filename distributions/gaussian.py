@@ -16,3 +16,8 @@ def gaussian_generator(mean, sigma):
         u_2 = uniform(0, 1)
         z_1 = sqrt(-2 * log(u_1)) * sin(2 * pi * u_2)
         yield z_1 * sigma + mean
+
+
+# TODO
+def gaussian_date_generator(mean, sigma):
+    return 0

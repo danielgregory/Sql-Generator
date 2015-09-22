@@ -2,21 +2,20 @@ import unittest
 from sql.insert_into import insert_into, transform
 
 
-##
 class TestInsertMethods(unittest.TestCase):
     """ Simple happy path tests to confirms that we get the correct insert statement."""
     def test_insert(self):
         """ Confirm generated insert statement is correct."""
         column_value_pairs = [{"NAME": "Donald", "AGE": 54}]
-        insert_statement = insert_into("USER_TABLE", column_value_pairs)
+        actual_insert_statement = insert_into("USER_TABLE", column_value_pairs)[0]
 
         # there is no guarantee on the ordering of columns
-        expected_insert_statement1 = "INSERT INTO USER_TABLE (AGE, NAME) VALUES (54, 'Donald')"
-        expected_insert_statement2 = "INSERT INTO USER_TABLE (NAME, AGE) VALUES ('Donald', 54)"
+        expected_insert_statement1 = "INSERT INTO USER_TABLE (AGE, NAME) VALUES (54, 'Donald');"
+        expected_insert_statement2 = "INSERT INTO USER_TABLE (NAME, AGE) VALUES ('Donald', 54);"
 
-        test_result = (insert_statement == expected_insert_statement1) or (
-            insert_statement == expected_insert_statement2)
-
+        test_result = (actual_insert_statement == expected_insert_statement1) or (
+            actual_insert_statement == expected_insert_statement2)
+        print(actual_insert_statement)
         self.assertTrue(test_result)
 
     def test_transform_with_string(self):

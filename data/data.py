@@ -1,6 +1,24 @@
 __author__ = 'Daniel Gregory'
 from distributions.gaussian import gaussian_generator
 import os
+from uuid import uuid4
+
+
+class DataTypes(object):
+    def __init__(self, names):
+        for number, name in enumerate(names.split()):
+            setattr(self, name, number)
+
+dt = DataTypes("uniform_int gaussian_int str datetime uuid")
+
+
+# TODO: where should this go?
+def generate_uuid():
+    """
+    Returns a random UUID string.
+    """
+    while True:
+        yield uuid4().get_hex()
 
 
 def generate_column_value_pairs(columns, n):
@@ -16,23 +34,23 @@ def generate_column_value_pairs(columns, n):
     n corresponds to the number of rows of generated data to return
     as a generator.
     """
-    # generators the distributions
+    # generates the distributions
     gs = get_names()
     gg = gaussian_generator(5, 5)
-
+    uuid = generate_uuid()
     # return result
-    data_list = []
     for _ in range(n):
+        data_dict = {}
         for k, v in columns.items():
-            data_dict = {}
-            if v == str:
+            if v == dt.str:
                 data_dict[k] = next(gs)
-            elif v == int:
+            elif v == dt.gaussian_int:
                 data_dict[k] = round(next(gg))
+            elif v == dt.uuid:
+                data_dict[k] = next(uuid)
             else:
                 raise Exception("Type not found")
-            data_list.append(data_dict)
-    return (data for data in data_list)
+        yield data_dict
 
 
 def generate_test_data(filename):
