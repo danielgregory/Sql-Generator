@@ -20,8 +20,8 @@ def plot_gaussian_dates():
     """
     # generate test data
     mean = datetime.datetime(2010, 12, 1, 0, 0)
-    sigma = datetime.datetime(2012, 12, 1, 0, 0)
-    dates = gaussian_date_generator(mean, sigma)
+    sigma_in_days = 100
+    dates = gaussian_date_generator(mean, sigma_in_days)
     dates_in_seconds = [(dates.next() - datetime.datetime.utcfromtimestamp(0)).total_seconds()
                         for _ in range(1000)]
     plot_points(dates_in_seconds, 100)
